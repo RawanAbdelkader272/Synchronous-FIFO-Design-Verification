@@ -4,7 +4,7 @@
 ![SVA](https://img.shields.io/badge/Assertions-SVA-green)
 ![Simulator](https://img.shields.io/badge/Simulator-QuestaSim-orange)
 
-## 📖 Overview
+## Overview
 This project presents a complete RTL design and verification flow for a configurable **Synchronous First-In-First-Out (FIFO) memory**. Implemented in SystemVerilog, the design features robust control logic, pointer management, and comprehensive status flags. The verification environment leverages **SystemVerilog Assertions (SVA)** for real-time property checking, alongside a structured testbench with a reference-model scoreboard and functional coverage to ensure exhaustive validation across all operational modes and corner cases.
 
 ## 📄 Documentation
@@ -25,7 +25,7 @@ A class based, assertion-driven verification approach was employed:
 - **Functional Coverage**: Covergroups and cross-coverage track stimulus distribution, flag combinations, and edge-case scenarios (e.g., simultaneous R/W, wrap-around, overflow/underflow).
 - **Constrained-Random Stimulus**: Testbench generates randomized `wr_en`/`rd_en` patterns with weighted distributions to stress-test all FIFO states.
 
-## 🐛 Bugs Identified & Resolved
+## Bugs Identified & Resolved
 During verification, six critical design flaws were uncovered and corrected:
 | # | Bug Description | Fix Applied |
 |---|-----------------|-------------|
@@ -35,16 +35,4 @@ During verification, six critical design flaws were uncovered and corrected:
 | 4 | Missing simultaneous R/W handling (`2'b11` case) | Added conditional logic to prevent counter drift on concurrent ops |
 | 5 | Incomplete reset (not all internal registers cleared) | Added full reset assignments to all sequential blocks |
 | 6 | Missing pointer wrap-around | Implemented modular wrap: `ptr <= (ptr == DEPTH-1) ? 0 : ptr + 1` |
-
-## 📋 Verification Plan
-| ID | Feature | Verification Method |
-|----|---------|---------------------|
-| FIFO_1 | Reset Initialization | Directed + Assertions |
-| FIFO_2-3 | Read/Write Operations | Random + Concurrent Assertions |
-| FIFO_4 | Simultaneous R/W | Random + Stable Counter Check |
-| FIFO_5 | Invalid Ops (Full/Empty) | Random + No-Update Assertions |
-| FIFO_6-9 | Status Flags (`full`, `empty`, `almost*`) | Boundary Stimulus + Cover Bins |
-| FIFO_10-11 | Overflow/Underflow | Random + Sequential Assertions |
-| FIFO_12 | Pointer Wrap-Around | Directed + Assertions |
-| FIFO_13 | Counter Bounds | Full-Range + Coverage |
 
